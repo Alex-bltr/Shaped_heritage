@@ -5,11 +5,31 @@ import time
 import hid
 import threading
 import queue
+import os 
+
 
 reaction_start = 0
 final_time= 0 
 button_locked = False
 button_locked_2 = False
+
+def find_all(name, dir_name, search_path, final_path):
+    full_dir_path = os.path.join(search_path, dir_name)
+    if not os.path.exists(full_dir_path):
+        os.mkdir(full_dir_path)
+
+    file_found = False
+    for root, dirs, files in os.walk(final_path):
+        if name in files:
+            file_found = True
+            print("File exists")
+            break
+
+    if not file_found:
+        with open('C:\\Users\\alexg\\Documents\\Shaped_heritage_race\\rang.txt', 'x') as f:
+            print(f"File '{name}' created in '{final_path}'")
+
+
 
 def worker(q):
     global final_time, reaction_start, button_locked, button_blocked_2
@@ -97,7 +117,7 @@ def main():
     und die texte sind ja eben an ihre box gekoppelt weil durhc die box kooridnaten der rest berechnet wird
     heißt es kann passieren das sie dann nicht mehr in den top 5 sind okay kein problem heist am besten hätte ich ja eine liste und prüfe da durch weil 
     einer seits habe ich ja die boxen deren ranking sich ja ändert '''
-
+    
 
     big_box = [rang_rect.y + 80 + (55 * i) for i in range(5)]
     # hier kommen die aktuellen Top 5 rein wie mache ich das aber das ist die nächste frage
@@ -213,6 +233,7 @@ def main():
     logo = pygame.transform.scale(logo_s,(350,140))
 
     now_i = 0 
+    file_url = 'C:\\Users\\alexg\\Documents\\Shaped_heritage_race\\rang.txt'
     #schau mal wenn ich das ganze latest player = current player nach enter mache dann spielen 
     
     def game_init():
@@ -452,10 +473,19 @@ def main():
             early_click = False
             alert = True
             button_locked=False
+        with open(file_url, 'a') as f:
+            f.write(Rang)
     pygame.quit()
 
 
 if __name__ == "__main__":
+    
+    find_all(
+    'rang.txt',
+    'Shaped_heritage_race',
+    'C:\\Users\\alexg\\Documents',
+    'C:\\Users\\alexg\\Documents\\Shaped_heritage_race'
+    )
     
     try:
         main()
