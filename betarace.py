@@ -234,6 +234,7 @@ def main():
 
     now_i = 0 
     file_url = 'C:\\Users\\alexg\\Documents\\Shaped_heritage_race\\rang.txt'
+    file_changed = False
     #schau mal wenn ich das ganze latest player = current player nach enter mache dann spielen 
     
     def game_init():
@@ -281,11 +282,13 @@ def main():
                         box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
                         box_liste.append(box)
                         box_count += 1
+                        file_changed = True
                     if current_player not in Rang:  
                         Rang[current_player] = [0]
                         box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
                         box_liste.append(box)
                         box_count += 1
+                        file_changed = True
                     
 
 
@@ -473,11 +476,13 @@ def main():
             early_click = False
             alert = True
             button_locked=False
-        with open(file_url, 'a') as f:
-            f.write(Rang)
+        if file_changed:
+            with open(file_url, 'w') as f:
+                f.write(str(Rang))
+            file_changed = False
+        else:
+            pass
     pygame.quit()
-
-
 if __name__ == "__main__":
     
     find_all(
