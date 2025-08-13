@@ -12,7 +12,7 @@ reaction_start = 0
 final_time= 0 
 button_locked = False
 button_locked_2 = False
-
+button_locked_3 = False
 def find_all(name, dir_name, search_path, final_path):
     full_dir_path = os.path.join(search_path, dir_name)
     if not os.path.exists(full_dir_path):
@@ -26,13 +26,14 @@ def find_all(name, dir_name, search_path, final_path):
             break
 
     if not file_found:
-        with open('C:\\Users\\alexg\\Documents\\Shaped_heritage_race\\rang.txt', 'x') as f:
+        print("wtf")
+        with open('d:\\Nick-shapedheritage\\F1_Ampel_racing\\Shaped_heritage_race\\rang.txt', 'x') as f:
             print(f"File '{name}' created in '{final_path}'")
 
 
 
 def worker(q):
-    global final_time, reaction_start, button_locked, button_blocked_2
+    global final_time, reaction_start, button_locked, button_blocked_2, button_locked_3
     
     VENDOR_ID  = 0xeb7  # Deine 5227 dezimal = 0x146B
     PRODUCT_ID = 0x20  # 1541 dezimal
@@ -51,7 +52,7 @@ def worker(q):
             if data:
                 button_state = data[2]  # Achtung: Index anpassen je nach Gerät
 
-                if not button_locked and not button_locked_2:
+                if not button_locked and not button_locked_2 and not button_locked_3:
                     if button_state == 1 and last_button_state == 0:
                         q.put(1)
                     elif button_state == 0 and last_button_state == 1:
@@ -70,15 +71,15 @@ def worker(q):
 
 
 def main():
-    global final_time, reaction_start, button_locked, button_locked_2
+    global final_time, reaction_start, button_locked, button_locked_2, button_locked_3
     #print(final_time)
     q = queue.Queue()
     threading.Thread(target=worker, args=(q,), daemon=True).start()
     GAP = 5
-    AMPEL_WIDTH = 110
+    AMPEL_WIDTH = 141
     COUNT = 5
     total_width = COUNT * AMPEL_WIDTH + (COUNT - 1) * GAP
-    start_x = 1920-total_width-275
+    start_x = 1075
 
     pygame.init()
     display = pygame.display.set_mode((1920, 1200))
@@ -101,10 +102,12 @@ def main():
     font_small = pygame.font.SysFont("Arial", 30)
     font_input = pygame.font.SysFont("Arial", 35)
     font_1 = pygame.font.SysFont("Arial", 40)
-    input_box = pygame.Rect(280, 350, 415, 50)  
+    input_box = pygame.Rect(180, 350, 530, 50)  
+    warning_box = pygame.Rect(input_box.x+input_box.width+90,input_box.y+45, 70, 50)
+    warning_box_2 = pygame.Rect(input_box.x+input_box.width+180,input_box.y+45, 90, 50)
     inp_active = False
     text_input = ""
-    rang_rect = pygame.Rect(280, 420 , 415, 420)
+    rang_rect = pygame.Rect(180, 420 , 530, 440)
     Rang = {}
     box_liste = []
     box_count = 0 
@@ -169,8 +172,8 @@ def main():
 
     class Ampel:
         def __init__(self, x):
-            self.width = 100
-            self.height = 336
+            self.width = 131
+            self.height = 440
             self.x = x
             self.y = 425
             self.lampenfarben = ["#1F1F1F"] * 4
@@ -188,8 +191,8 @@ def main():
                 pygame.draw.circle(
                     display,
                     self.lampenfarben[i],
-                    (self.x + self.width // 2, self.y + 50 + i * 80),
-                    36.5
+                    (self.x + self.width // 2, self.y + 60 + i * 105),
+                    47
                 )
     ampeln = [Ampel(x=start_x + i * (AMPEL_WIDTH + GAP)) for i in range(COUNT)]
     start_time = 0
@@ -198,13 +201,10 @@ def main():
     start_time2 = 0 
     gamecount = 0 
     current_player = ""
-    violation = False
-    font_3 = pygame.font.SysFont("Arial", 40)
-    image = pygame.image.load("C:\\Users\\alexg\\Documents\\shapedheritage[1].png")
-    scaledimg = pygame.transform.scale(image,(450,225))
-    image2 = pygame.image.load("C:\\Users\\alexg\\Pictures\\trophy.png")
-    image3 = pygame.image.load("C:\\Users\\alexg\\Documents\\platz2.png")
-    image4 = pygame.image.load("C:\\Users\\alexg\\Documents\\platz3.png")
+    
+    image2 = pygame.image.load("trophy.png")
+    image3 = pygame.image.load("platz2.png")
+    image4 = pygame.image.load("platz3.png")
     first_p = pygame.transform.scale(image2,(30,30))
     second_p = pygame.transform.scale(image3,(30,30))
     third_p = pygame.transform.scale(image4,(30,30))
@@ -212,29 +212,34 @@ def main():
     alert = False
     lastest_player = ""
 
-    big_font = pygame.font.Font("C:\\Users\\alexg\\Documents\\CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 110)
+    big_font = pygame.font.Font("CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 110)
     
-    title_font = pygame.font.Font("C:\\Users\\alexg\\Documents\\CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 85)
+    title_font = pygame.font.Font("CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 85)
     
     
-    special_font = pygame.font.Font("C:\\Users\\alexg\\Documents\\CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 40)
+    special_font = pygame.font.Font("CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 40)
     
-    buba_font = pygame.font.Font("C:\\Users\\alexg\\Documents\\CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 45)
+    buba_font = pygame.font.Font("CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 45)
     
-    regular_font = pygame.font.Font("C:\\Users\\alexg\\Documents\\CanvaSans-Regular9755562880743818424.2de.2de498afbe8ce167560d5df6489c2042.ttf", 30)
+    regular_font = pygame.font.Font("CanvaSans-Regular9755562880743818424.2de.2de498afbe8ce167560d5df6489c2042.ttf", 30)
     
-    smaller_font = pygame.font.Font("C:\\Users\\alexg\\Documents\\CanvaSans-Regular9755562880743818424.2de.2de498afbe8ce167560d5df6489c2042.ttf", 25)
+    smaller_font = pygame.font.Font("CanvaSans-Regular9755562880743818424.2de.2de498afbe8ce167560d5df6489c2042.ttf", 25)
     
-    flag = pygame.image.load("C:\\Users\\alexg\\Documents\\raceflag.png")
+    flag = pygame.image.load("raceflag.png")
     scaled_flag = pygame.transform.scale(flag, (800,400))
     top_flag = pygame.transform.rotate(scaled_flag, 33)
     bottom_flag = pygame.transform.rotate(scaled_flag, 185)
-    logo_s = pygame.image.load("C:\\Users\\alexg\\Documents\\Logo_bild.jpg")
+    logo_s = pygame.image.load("Logo_bild.jpg")
     logo = pygame.transform.scale(logo_s,(350,140))
 
     now_i = 0 
-    file_url = 'C:\\Users\\alexg\\Documents\\Shaped_heritage_race\\rang.txt'
+    file_url = 'd:\\Nick-shapedheritage\\F1_Ampel_racing\\Shaped_heritage_race\\rang.txt'
     file_changed = False
+    ex_name = False
+    new_name= False
+    warning = smaller_font.render("Spieler bereits registriert", True, "white")
+    ja = regular_font.render(f"Ja", True, "white")
+    nein = regular_font.render(f"Nein", True, "white")
     #schau mal wenn ich das ganze latest player = current player nach enter mache dann spielen 
     
     def game_init():
@@ -252,9 +257,12 @@ def main():
         
         #zeit messen und einsortieren 
     #transparent_surface = pygame.Surface()
+    
+    
 
     while run:
         display.fill("#373737")
+        display.blit(logo,(1920//2-200,915))
         try:
             item = q.get_nowait()
             if item == 1:
@@ -317,19 +325,36 @@ def main():
                     visible = True
                 else:
                     inp_active = False
+                if warning_box.collidepoint(event.pos):
+                    ex_name = False
+                    button_locked_3 = False
+                elif warning_box_2.collidepoint(event.pos):
+                    new_name = True
+                    ex_name = False
                     
             if event.type == pygame.KEYDOWN and inp_active:
                 if event.key == pygame.K_BACKSPACE:
                     text_input = text_input[:-1]
                     
                 elif event.key == pygame.K_RETURN:
-
-                    current_player = text_input
+                    current_player = text_input.lower()
+                    if current_player[-1] == " ":
+                        current_player = current_player[:-1]
+                    else:pass
                     text_input = ""  # optional: zurücksetzen nach Enter
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
-                    else :pass
+                    else:
+                        ex_name = True
+                        button_locked_3 = True
+                    if new_name:
+                        new_name = False
+                        button_locked_3 = False
+                    
+                        
+                        
+                        
                     visible = False
                     inp_active = False
                     butpresse = False
@@ -388,26 +413,44 @@ def main():
         if not early_click:
             text = f"{final_time:.3f}"
             surface =big_font.render(text, True, "white")
-            display.blit(logo,(1920//2-200,860))
-            display.blit(bottom_flag, (1000,800))
-            display.blit(surface, (start_x+total_width//2-160, 750))
+            display.blit(bottom_flag, (1300,870))
+            display.blit(surface, (start_x+total_width//2-160, 880))
         else:
-            #hier muss dann noch hin der bitte rarteb tag 
+            
             text = "Frühstart!"
             surface =big_font.render(text, True, "white")
-            display.blit(logo,(1920//2-200,860))
-            display.blit(bottom_flag, (1000,800))
-            display.blit(surface, (start_x+total_width//2-270, 750))
-            warning = buba_font.render("Bitte warten!", True, "white")
-            display.blit(warning, (1920//2.6,560))
+            display.blit(bottom_flag, (1300,870))
+            display.blit(surface, (start_x+total_width//2-270, 850))
+            warning_g = buba_font.render("Bitte warten!", True, "white")
+            display.blit(warning_g, (1920//2.6,560))
         
+        
+        if ex_name:
+           pygame.draw.rect(display, "#700A0B", (input_box.x+input_box.width+20, input_box.y-40, 325,150), border_radius=15)
+           pygame.draw.rect(display, "white", (input_box.x+input_box.width+20, input_box.y-40, 325,150),2, border_radius=15)
+           display.blit(warning, (input_box.x+input_box.width+30, input_box.y-35))
+           warning2 = smaller_font.render(f"Bist du {current_player}?", True, "white")
+           display.blit(warning2, (input_box.x+ input_box.width+30, input_box.y))
+           pygame.draw.rect(display, "#373737", warning_box,border_radius=15)
+           pygame.draw.rect(display, "#373737", warning_box_2,border_radius=15)
+           pygame.draw.rect(display, "white", warning_box,2,border_radius=15)
+           pygame.draw.rect(display, "white", warning_box_2,2,border_radius=15)
+           display.blit(ja, (input_box.x+input_box.width+105,input_box.y+47))
+           display.blit(nein, (input_box.x+input_box.width+190,input_box.y+47))
+        
+        if new_name:
+            pygame.draw.rect(display, "#700A0B", (input_box.x+input_box.width+20, input_box.y-40, 325,150), border_radius=15)
+            pygame.draw.rect(display, "white", (input_box.x+input_box.width+20, input_box.y-40, 325,150),2, border_radius=15)
+            display.blit(warning, (input_box.x+input_box.width+30, input_box.y-35))
+            warning2 = smaller_font.render(f"Neuen Namen eingeben", True, "white")
+            display.blit(warning2, (input_box.x+ input_box.width+30, input_box.y))
         
         Undertitle = regular_font.render("Meet & Speed | Bilster Berg 2025", True, "white")
         
-        display.blit(top_flag, (-200,0))
+        display.blit(top_flag, (-350,-100))
         
         haeder = title_font.render("Launch Control Challenge", True, "white")
-        display.blit(haeder, (1920//4.5,150))
+        display.blit(haeder, (1920//4.5,100))
         
         if alert:
             game_init()
@@ -456,10 +499,10 @@ def main():
         pygame.draw.rect(display, "#737373", (start_x,290,total_width,input_box.height+60), border_radius=15)
         display.blit(spieler, (start_x+15,300))
         display.blit(ranking, (start_x+15,350))
-        display.blit(Undertitle, (1920//2-265, 1015))
+        display.blit(Undertitle, (1920//2-265, 1070))
 
         tanzahl = regular_font.render(f"Teilnehmerzahl: {box_count}", True, "white")
-        display.blit(tanzahl, (rang_rect.x+10, rang_rect.y+rang_rect.width-45))
+        display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
         
         #print(Top5)
         pygame.display.flip()
@@ -488,8 +531,8 @@ if __name__ == "__main__":
     find_all(
     'rang.txt',
     'Shaped_heritage_race',
-    'C:\\Users\\alexg\\Documents',
-    'C:\\Users\\alexg\\Documents\\Shaped_heritage_race'
+    'd:\\Nick-shapedheritage\\F1_Ampel_racing',
+    'd:\\Nick-shapedheritage\\F1_Ampel_racing\\Shaped_heritage_race'
     )
     
     try:
