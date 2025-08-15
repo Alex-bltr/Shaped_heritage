@@ -297,6 +297,7 @@ def main():
                     clicked = False
                     gamecount +=3
                     final_time = 0
+                    counter_dic[current_player] = [50-gamecount]
                     
 
                 if ready_for_click and not inp_active:
@@ -406,7 +407,7 @@ def main():
         if clicked and not ready_for_click and not early_click and not inp_active:
             alert = False
         
-            if ampel_step < COUNT and now - ampel_last_change >= 1000:
+            if ampel_step < COUNT and now - ampel_last_change >= 750:
                 ampeln[ampel_step].set_lampe(2, "red")
                 ampeln[ampel_step].set_lampe(3, "red")
                 ampel_step += 1
@@ -522,13 +523,13 @@ def main():
         pygame.draw.rect(display, "#737373", (start_x,290,total_width,input_box.height+60), border_radius=15)
         display.blit(spieler, (start_x+15,300))
         display.blit(ranking, (start_x+15,350))
-        display.blit(Undertitle, (1920//2-265, 1070))
+        display.blit(Undertitle, (1920//2-250, 1070))
 
         tanzahl = regular_font.render(f"Teilnehmerzahl: {box_count}", True, "white")
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
-        if gamecount != 0:
-            sp_zug = regular_font.render(f"{counter_dic[current_player]}/50", True, "white")
-            display.blit(sp_zug,(rang_rect.x+15, rang_rect.y+rang_rect.width-180))
+        if current_player != "":
+            sp_zug = regular_font.render(f"Versuche übrig: {int(counter_dic[current_player])}/50", True, "white")
+            display.blit(sp_zug,(start_x+100,300))
         
         #print(Top5)
         pygame.display.flip()
