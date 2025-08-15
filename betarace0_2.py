@@ -464,7 +464,7 @@ def main():
             warning2 = smaller_font.render(f"Neuen Namen eingeben", True, "white")
             display.blit(warning2, (input_box.x+ input_box.width+30, input_box.y))
         
-        Undertitle = regular_font.render("Meet & Speed | Bilster Berg 2025", True, "white")
+        Undertitle = regular_font.render("Meet & Speed | Meppen 2025", True, "white")
         
         display.blit(top_flag, (-350,-100))
         
@@ -526,9 +526,9 @@ def main():
 
         tanzahl = regular_font.render(f"Teilnehmerzahl: {box_count}", True, "white")
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
-
-        sp_zug = regular_font.render(f"{counter_dic[current_player]}/50", True, "white")
-        display.blit(sp_zug,(rang_rect.x+15, rang_rect.y+rang_rect.width-180))
+        if gamecount != 0:
+            sp_zug = regular_font.render(f"{counter_dic[current_player]}/50", True, "white")
+            display.blit(sp_zug,(rang_rect.x+15, rang_rect.y+rang_rect.width-180))
         
         #print(Top5)
         pygame.display.flip()
