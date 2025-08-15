@@ -528,7 +528,7 @@ def main():
         tanzahl = regular_font.render(f"Teilnehmerzahl: {box_count}", True, "white")
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
         if current_player != "":
-            sp_zug = regular_font.render(f"Versuche übrig: {int(counter_dic[current_player])}/50", True, "white")
+            sp_zug = regular_font.render(f"Versuche übrig: {counter_dic[current_player]}/50", True, "white")
             display.blit(sp_zug,(start_x+100,300))
         
         #print(Top5)
