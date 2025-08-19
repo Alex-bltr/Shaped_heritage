@@ -225,6 +225,7 @@ def main():
     gamers = 0 
     alert = False
     lastest_player = ""
+    f_co = 0 
 
     big_font = pygame.font.Font("CanvaSans-Bold12338993995495434039.af71a.af71aaddb4396e5f746d513b7b12c6be.ttf", 110)
     
@@ -258,6 +259,8 @@ def main():
     counter_dic = {}
     play_check = False
     alert2 = False
+    alert3 = False
+
     def game_init():
         line1 = buba_font.render("Drücke den", True, "white")
         line2 = buba_font.render("Knopf, um die", True, "white")
@@ -273,8 +276,18 @@ def main():
     #transparent_surface = pygame.Surface()
     def alerting():
         line1 = buba_font.render("Leider haben sie", True, "white")
-        line2 = buba_font.render("Keine SPielzüge", True, "white")
-        line3 = buba_font.render("mehr zur Verfügung", True, "white")
+        line2 = buba_font.render("Keine Spielzüge", True, "white")
+        line3 = buba_font.render("mehr zur", True, "white")
+        line4 = buba_font.render("Verfügung", True, "white")
+        display.blit(line1, (1920//2.5,500))
+        display.blit(line2, (1920//2.5-20,560))
+        display.blit(line3, (1920//2.5+20,620))
+        display.blit(line4, (1920//2.5+40,680))
+
+    def alerting():
+        line1 = buba_font.render("Test", True, "white")
+        line2 = buba_font.render("Spielzüge", True, "white")
+        line3 = buba_font.render("", True, "white")
         line4 = buba_font.render("", True, "white")
         display.blit(line1, (1920//2.5,500))
         display.blit(line2, (1920//2.5-20,560))
@@ -303,11 +316,12 @@ def main():
                     clicked = False
                     gamecount +=3
                     final_time = 0
+                    f_co +=1
                     #was ich hier nicht vertshe ist folgendes sagen wir wir spielen einmal dann wird dieser vefhel durch gespielt also beim zweiten 
-                    if counter_dic[current_player] >= 51:
-                        pass
-                    else:
-                        counter_dic[current_player] = 50-gamecount
+                    #if counter_dic[current_player] >= 51:
+                    #    pass
+                    #else:
+                    #    counter_dic[current_player] = 50-gamecount
                     
 
                 if ready_for_click and not inp_active:
@@ -335,12 +349,16 @@ def main():
                     ready_for_click = False
                     clicked = False
                     gamecount +=1
-                    if counter_dic[current_player] <=0:
-                        alert2 = True
-                        button_locked_4 = True
-                    else: 
-                        alert = True
-                        counter_dic[current_player] = 52-gamecount
+                    f_co +=1
+                    if f_co <=2:
+                        pass
+                    else:
+                        if counter_dic[current_player] <=0:
+                            alert2 = True
+                            button_locked_4 = True
+                        else: 
+                            alert = True
+                            counter_dic[current_player] = 50-gamecount
         except queue.Empty:
             pass            
         for event in pygame.event.get():
@@ -374,7 +392,8 @@ def main():
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
-                        counter_dic[current_player] = 52  
+                        counter_dic[current_player] = 50  
+                        
                         button_locked_4 = False
                     else:
                         ex_name = True
@@ -389,6 +408,7 @@ def main():
                     butpresse = False
                     alert = True 
                     gamers +=1
+                    f_co = 0
                     
                 
                     
@@ -487,7 +507,13 @@ def main():
         if alert:
             game_init()
         if alert2:
+            alert = False
+            alert3 = False
             alerting()
+        if alert3:
+            alert= False
+            alert2=False
+            altring()
 
 
                 
@@ -541,7 +567,7 @@ def main():
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
         if current_player != "":
             sp_zug = regular_font.render(f"Versuche übrig: {counter_dic[current_player]}/50", True, "white")
-            display.blit(sp_zug,(start_x+150,300))
+            display.blit(sp_zug,(start_x+200,300))
         
         
         #print(Top5)
