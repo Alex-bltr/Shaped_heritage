@@ -251,6 +251,7 @@ def main():
     nein = regular_font.render(f"Nein", True, "white")
     #schau mal wenn ich das ganze latest player = current player nach enter mache dann spielen 
     counter_dic = {}
+    play_check = False
     alert2 = False
     def game_init():
         line1 = buba_font.render("Drücke den", True, "white")
@@ -297,20 +298,19 @@ def main():
                     clicked = False
                     gamecount +=3
                     final_time = 0
+                    #was ich hier nicht vertshe ist folgendes sagen wir wir spielen einmal dann wird dieser vefhel durch gespielt also beim zweiten 
                     counter_dic[current_player] = [50-gamecount]
                     
 
                 if ready_for_click and not inp_active:
                     if gamecount == 0:
-                        Rang[current_player] = [0]
-                        counter_dic[current_player] = [50]     
+                        Rang[current_player] = [0]  
                         box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
                         box_liste.append(box)
                         box_count += 1
                         file_changed = True
                     if current_player not in Rang:  
-                        Rang[current_player] = [0]
-                        counter_dic[current_player] = [50]     
+                        Rang[current_player] = [0]   
                         box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
                         box_liste.append(box)
                         box_count += 1
@@ -319,6 +319,7 @@ def main():
 
 
                     Rang[current_player].append(final_time)
+                    play_check = True 
                         
                     if 0 in Rang[current_player]:
                         Rang[current_player].remove(0)
@@ -361,10 +362,11 @@ def main():
                     if current_player[-1] == " ":
                         current_player = current_player[:-1]
                     else:pass
-                    text_input = ""  # optional: zurücksetzen nach Enter
+                    text_input = ""  
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
+                        counter_dic[current_player] = [50]  
                     else:
                         ex_name = True
                         button_locked_3 = True
@@ -379,6 +381,8 @@ def main():
                     alert = True 
                     gamers +=1
                     button_locked_4 = False
+                    
+                
                     
                 else:
                     #print(len(text_input))
