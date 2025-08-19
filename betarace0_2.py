@@ -15,6 +15,11 @@ getrennte liste anstatt im main Dic
 heist: dic initliasieren : plays{name: 50, name1: 49} 
 bei gc +=1 -> pgc +=1 
 schirft zugmit x/50 x = 
+es sind jetzt halt kleine sachen die ich noch ändern könnte bspw frbe geändert aufeinen bestimmten wert wenn man in den letzten 10 s
+spielzügen ist 
+oder das man halt eine warnung bekommt so daswars 0/50 spielen zur verfügung 
+aber ganz ehrlich an kann das dann auch einfach sehen ich würde sagen um details kümmere ich mich dann halt später bei nick weil bis dahin kann ich ja
+auch einfach sagen 52 spiele nstatt 50 fertoig!
 '''
 reaction_start = 0
 final_time= 0 
@@ -299,7 +304,10 @@ def main():
                     gamecount +=3
                     final_time = 0
                     #was ich hier nicht vertshe ist folgendes sagen wir wir spielen einmal dann wird dieser vefhel durch gespielt also beim zweiten 
-                    counter_dic[current_player] = [50-gamecount]
+                    if counter_dic[current_player] >= 51:
+                        pass
+                    else:
+                        counter_dic[current_player] = [50-gamecount]
                     
 
                 if ready_for_click and not inp_active:
@@ -327,12 +335,12 @@ def main():
                     ready_for_click = False
                     clicked = False
                     gamecount +=1
-                    if counter_dic[current_player] == 0:
+                    if counter_dic[current_player] <=0:
                         alert2 = True
                         button_locked_4 = True
                     else: 
                         alert = True
-                        counter_dic[current_player] = [50-gamecount]
+                        counter_dic[current_player] = [52-gamecount]
         except queue.Empty:
             pass            
         for event in pygame.event.get():
@@ -366,8 +374,8 @@ def main():
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
-                        counter_dic[current_player] = [50] 
-                        print("wtdffffffff") 
+                        counter_dic[current_player] = [52]  
+                        button_locked_4 = False
                     else:
                         ex_name = True
                         button_locked_3 = True
@@ -381,7 +389,6 @@ def main():
                     butpresse = False
                     alert = True 
                     gamers +=1
-                    button_locked_4 = False
                     
                 
                     
@@ -534,7 +541,8 @@ def main():
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
         if current_player != "":
             sp_zug = regular_font.render(f"Versuche übrig: {counter_dic[current_player]}/50", True, "white")
-            display.blit(sp_zug,(start_x+100,300))
+            display.blit(sp_zug,(start_x+150,300))
+        
         
         #print(Top5)
         pygame.display.flip()
