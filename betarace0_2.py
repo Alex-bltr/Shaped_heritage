@@ -307,7 +307,7 @@ def main():
                     if counter_dic[current_player] >= 51:
                         pass
                     else:
-                        counter_dic[current_player] = [50-gamecount]
+                        counter_dic[current_player] = 50-gamecount
                     
 
                 if ready_for_click and not inp_active:
@@ -340,7 +340,7 @@ def main():
                         button_locked_4 = True
                     else: 
                         alert = True
-                        counter_dic[current_player] = [52-gamecount]
+                        counter_dic[current_player] = 52-gamecount
         except queue.Empty:
             pass            
         for event in pygame.event.get():
@@ -374,7 +374,7 @@ def main():
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
-                        counter_dic[current_player] = [52]  
+                        counter_dic[current_player] = 52  
                         button_locked_4 = False
                     else:
                         ex_name = True
