@@ -366,7 +366,8 @@ def main():
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
-                        counter_dic[current_player] = [50]  
+                        counter_dic[current_player] = [50] 
+                        print("wtdffffffff") 
                     else:
                         ex_name = True
                         button_locked_3 = True
