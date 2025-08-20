@@ -516,7 +516,7 @@ def main():
         if alert2:
             alerting()
         if alert3:
-            alt()
+            alt(try_dic[current_player])
                 
         pygame.draw.rect(display,"white", input_box, 2, border_radius=10)
         text_sur = smaller_font.render("Neuen Namen hinzufügen:", True, "white")
