@@ -343,7 +343,7 @@ def main():
                         
                         gamecount +=1
                         
-                        if counter_dic[current_player] ==0:
+                        if counter_dic[current_player]==0:
                             alert2 = True
                             alert = False
                             button_locked_4 = True
@@ -352,6 +352,9 @@ def main():
                             counter_dic[current_player] = 50-gamecount
                             if counter_dic[current_player] <0:
                                 counter_dic[current_player] = 0
+                                button_locked_4 = True
+                                alert2 = True
+                                alert = False
                             
                     ready_for_click = False
                     clicked = False
