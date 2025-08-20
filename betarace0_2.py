@@ -321,9 +321,7 @@ def main():
                 if ready_for_click and not inp_active:
                     if try_dic[current_player] <=2:
                         try_dic[current_player] +=1
-                        alert3 = True
                     else:
-                        alert3 = False
                         if gamecount == 0:
                             Rang[current_player] = [0]  
                             box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
@@ -350,6 +348,7 @@ def main():
                         
                         if counter_dic[current_player] ==0:
                             alert2 = True
+                            alert = False
                             button_locked_4 = True
                         else: 
                             alert = True
@@ -515,9 +514,9 @@ def main():
             game_init()
         if alert2:
             alerting()
-        if alert3:
+        '''if alert3:
             alt(try_dic[current_player])
-                
+        '''        
         pygame.draw.rect(display,"white", input_box, 2, border_radius=10)
         text_sur = smaller_font.render("Neuen Namen hinzufügen:", True, "white")
         display.blit(text_sur, (input_box.x+10, input_box.y - 40))
@@ -569,6 +568,9 @@ def main():
         if current_player != "":
             sp_zug = regular_font.render(f"Versuche übrig: {counter_dic[current_player]}/50", True, "white")
             display.blit(sp_zug,(start_x+325,300))
+            #hier muss der alter hin
+            try_case = regular_font.render(f"Testversuche: {try_dic[current_player]}/2", True, "white")
+            display.blit(try_case, (start_x+325,250))
         
         
         #print(Top5)
