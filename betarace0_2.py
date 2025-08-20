@@ -278,14 +278,10 @@ def main():
         line2 = buba_font.render("Keine Spielzüge", True, "white")
         line3 = buba_font.render("mehr zur", True, "white")
         line4 = buba_font.render("Verfügung", True, "white")
-        display.blit(line1, (1920//2.5,500))
+        display.blit(line1, (1920//2.7,500))
         display.blit(line2, (1920//2.5-20,560))
-        display.blit(line3, (1920//2.5+20,620))
-        display.blit(line4, (1920//2.5+40,680))
-
-    def alt(num):
-        line1 = buba_font.render(f"Testversuch {num}.", True, "white")
-        display.blit(line1, (1920//3,500))
+        display.blit(line3, (1920//2.6+20,620))
+        display.blit(line4, (1920//2.7+40,680))
     
     while run:
         display.fill("#373737")
@@ -303,8 +299,8 @@ def main():
         
             elif item ==2:
                 if clicked and not ready_for_click and not inp_active:
-                    if try_dic[current_player] <=2:
-                        try_dic[current_player] +=1
+                    if try_dic[current_player] >0:
+                        try_dic[current_player] -=1
                         early_click = True
                         button_locked = True
                         clicked = False
@@ -319,8 +315,9 @@ def main():
                     
 
                 if ready_for_click and not inp_active:
-                    if try_dic[current_player] <=2:
-                        try_dic[current_player] +=1
+                    if try_dic[current_player] >0:
+                        try_dic[current_player] -=1
+                        alert = True
                     else:
                         if gamecount == 0:
                             Rang[current_player] = [0]  
@@ -404,7 +401,7 @@ def main():
                         button_locked_3 = False
 
                     if current_player not in try_dic:
-                        try_dic[current_player] = 0
+                        try_dic[current_player] = 2
                     
                     
                     
@@ -514,9 +511,7 @@ def main():
             game_init()
         if alert2:
             alerting()
-        '''if alert3:
-            alt(try_dic[current_player])
-        '''        
+             
         pygame.draw.rect(display,"white", input_box, 2, border_radius=10)
         text_sur = smaller_font.render("Neuen Namen hinzufügen:", True, "white")
         display.blit(text_sur, (input_box.x+10, input_box.y - 40))
@@ -567,10 +562,10 @@ def main():
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
         if current_player != "":
             sp_zug = regular_font.render(f"Versuche übrig: {counter_dic[current_player]}/50", True, "white")
-            display.blit(sp_zug,(start_x+325,300))
+            display.blit(sp_zug,(start_x+325,350))
             #hier muss der alter hin
-            try_case = regular_font.render(f"Testversuche: {try_dic[current_player]}/2", True, "white")
-            display.blit(try_case, (start_x+325,250))
+            try_case = regular_font.render(f"Testversuche: {try_dic[current_player]}/2", True, "#940909")
+            display.blit(try_case, (start_x+325,3000))
         
         
         #print(Top5)
