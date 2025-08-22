@@ -15,6 +15,11 @@ getrennte liste anstatt im main Dic
 heist: dic initliasieren : plays{name: 50, name1: 49} 
 bei gc +=1 -> pgc +=1 
 schirft zugmit x/50 x = 
+es sind jetzt halt kleine sachen die ich noch ändern könnte bspw frbe geändert aufeinen bestimmten wert wenn man in den letzten 10 s
+spielzügen ist 
+oder das man halt eine warnung bekommt so daswars 0/50 spielen zur verfügung 
+aber ganz ehrlich an kann das dann auch einfach sehen ich würde sagen um details kümmere ich mich dann halt später bei nick weil bis dahin kann ich ja
+auch einfach sagen 52 spiele nstatt 50 fertoig!
 '''
 reaction_start = 0
 final_time= 0 
@@ -65,7 +70,7 @@ def worker(q):
                     if button_state == 1 and last_button_state == 0:
                         q.put(1)
                     elif button_state == 0 and last_button_state == 1:
-                        final_time = perf_counter()- reaction_start
+                        final_time = perf_counter()- reaction_start 
                         q.put(2)
 
                 last_button_state = button_state
@@ -251,7 +256,11 @@ def main():
     nein = regular_font.render(f"Nein", True, "white")
     #schau mal wenn ich das ganze latest player = current player nach enter mache dann spielen 
     counter_dic = {}
+    try_dic = {}
+    play_check = False
     alert2 = False
+    alert3 = False
+
     def game_init():
         line1 = buba_font.render("Drücke den", True, "white")
         line2 = buba_font.render("Knopf, um die", True, "white")
@@ -262,22 +271,22 @@ def main():
         display.blit(line3, (1920//2.5+20,620))
         display.blit(line4, (1920//2.5+40,680))
         
-        
         #zeit messen und einsortieren 
     #transparent_surface = pygame.Surface()
     def alerting():
-        line1 = buba_font.render("Leider haben sie", True, "white")
-        line2 = buba_font.render("Keine SPielzüge", True, "white")
-        line3 = buba_font.render("mehr zur Verfügung", True, "white")
-        line4 = buba_font.render("", True, "white")
-        display.blit(line1, (1920//2.5,500))
-        display.blit(line2, (1920//2.5-20,560))
-        display.blit(line3, (1920//2.5+20,620))
-        display.blit(line4, (1920//2.5+40,680))
+        line1 = buba_font.render("Du hast", True, "white")
+        line2 = buba_font.render("heute leider", True, "white")
+        line3 = buba_font.render("keine Versuche", True, "white")
+        line4 = buba_font.render("mehr", True, "white")
+        display.blit(line1, (1920//2.4,500))
+        display.blit(line2, (1920//2.48-20,560))
+        display.blit(line3, (1920//2.7+20,620))
+        display.blit(line4, (1920//2.43+40,680))
     
     while run:
+        
         display.fill("#373737")
-        display.blit(logo,(1920//2-200,915))
+        display.blit(logo,(1920//2-220,915))
         try:
             item = q.get_nowait()
             if item == 1:
@@ -290,48 +299,69 @@ def main():
                     wait_start = 0
         
             elif item ==2:
-    
                 if clicked and not ready_for_click and not inp_active:
-                    early_click = True
-                    button_locked = True
-                    clicked = False
-                    gamecount +=3
-                    final_time = 0
-                    counter_dic[current_player] = [50-gamecount]
+                    if try_dic[current_player] >0:
+                        try_dic[current_player] -=1
+                        early_click = True
+                        button_locked = True
+                        clicked = False
+                        final_time = 0
+                    else:
+                        early_click = True
+                        button_locked = True
+                        clicked = False
+                        gamecount +=3
+                        final_time = 0
+                        
+                        counter_dic[current_player] = 50-gamecount
+                        if counter_dic[current_player] <0:
+                            counter_dic[current_player] = 0
+                        
                     
 
                 if ready_for_click and not inp_active:
-                    if gamecount == 0:
-                        Rang[current_player] = [0]
-                        counter_dic[current_player] = [50]     
-                        box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
-                        box_liste.append(box)
-                        box_count += 1
-                        file_changed = True
-                    if current_player not in Rang:  
-                        Rang[current_player] = [0]
-                        counter_dic[current_player] = [50]     
-                        box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
-                        box_liste.append(box)
-                        box_count += 1
-                        file_changed = True
-                    
+                    if try_dic[current_player] >0:
+                        try_dic[current_player] -=1
+                        #alert = True
+                    else:
+                        if gamecount == 0:
+                            Rang[current_player] = [0]  
+                            box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
+                            box_liste.append(box)
+                            box_count += 1
+                            file_changed = True
+                        if current_player not in Rang:  
+                            Rang[current_player] = [0]   
+                            box = pygame.Rect(rang_rect.x +10, rang_rect.y+80+(55*box_count), rang_rect.width-20,50)
+                            box_liste.append(box)
+                            box_count += 1
+                            file_changed = True
+                        if counter_dic[current_player] !=0:
+                            alert = True
+                        else: alert = False
 
-
-                    Rang[current_player].append(final_time)
                         
-                    if 0 in Rang[current_player]:
-                        Rang[current_player].remove(0)
-                    
+
+
+                        Rang[current_player].append(final_time)
+                        play_check = True 
+                            
+                        if 0 in Rang[current_player]:
+                            Rang[current_player].remove(0)
+                        
+                        gamecount +=1
+                        
+                        if counter_dic[current_player] !=0:
+                            alert = True
+                        else: alert = False
+                        counter_dic[current_player] = 50-gamecount
+                        if counter_dic[current_player] <0:
+                            counter_dic[current_player] = 0
+                                
+                            
                     ready_for_click = False
                     clicked = False
-                    gamecount +=1
-                    if counter_dic[current_player] == 0:
-                        alert2 = True
-                        button_locked_4 = True
-                    else: 
-                        alert = True
-                        counter_dic[current_player] = [50-gamecount]
+                    
         except queue.Empty:
             pass            
         for event in pygame.event.get():
@@ -361,24 +391,40 @@ def main():
                     if current_player[-1] == " ":
                         current_player = current_player[:-1]
                     else:pass
-                    text_input = ""  # optional: zurücksetzen nach Enter
+                    text_input = ""  
                     final_time = 0 
                     if current_player not in Rang:
                         gamecount = 0
+                        counter_dic[current_player] = 50  
+                        gamers +=1
+                        button_locked_4 = False
+                        alert2 = False
                     else:
                         ex_name = True
                         button_locked_3 = True
+                        gamecount = 50-counter_dic[current_player]
                     if new_name:
                         new_name = False
                         button_locked_3 = False
-                    alert2 = False
+
+                    if current_player not in try_dic:
+                        try_dic[current_player] = 2
                     
+                    
+                    alert2 = False
                     visible = False
                     inp_active = False
                     butpresse = False
-                    alert = True 
-                    gamers +=1
+                    
+                    if counter_dic[current_player] !=0:
+                            alert = True
+                    else: alert = False
                     button_locked_4 = False
+                    '''hier versthe ich etwas nicht weil eigentlich versthe ich das nicht weil dasalert wird hier jedes mal aktiviert wenn man 
+                    seinen namen eingibt eist das wenn ich meinen namen eingebe '''
+                    '''hier muss das geändert weil wenn alert nur gezigt werden soll wenn testversuche um sind bzw soll dann alter 2 geten '''
+                    
+                
                     
                 else:
                     #print(len(text_input))
@@ -436,13 +482,12 @@ def main():
             display.blit(bottom_flag, (1300,870))
             display.blit(surface, (start_x+total_width//2-160, 880))
         else:
-            
             text = "Frühstart!"
             surface =big_font.render(text, True, "white")
             display.blit(bottom_flag, (1300,870))
             display.blit(surface, (start_x+total_width//2-270, 850))
             warning_g = buba_font.render("Bitte warten!", True, "white")
-            display.blit(warning_g, (1920//2.6,560))
+            display.blit(warning_g, (752,560))
         
         
         if ex_name:
@@ -476,9 +521,7 @@ def main():
             game_init()
         if alert2:
             alerting()
-
-
-                
+             
         pygame.draw.rect(display,"white", input_box, 2, border_radius=10)
         text_sur = smaller_font.render("Neuen Namen hinzufügen:", True, "white")
         display.blit(text_sur, (input_box.x+10, input_box.y - 40))
@@ -528,12 +571,24 @@ def main():
         tanzahl = regular_font.render(f"Teilnehmerzahl: {box_count}", True, "white")
         display.blit(tanzahl, (rang_rect.x+15, rang_rect.y+rang_rect.width-140))
         if current_player != "":
-            sp_zug = regular_font.render(f"Versuche übrig: {int(counter_dic[current_player])}/50", True, "white")
-            display.blit(sp_zug,(start_x+100,300))
+            sp_zug = regular_font.render(f"Versuche übrig: {counter_dic[current_player]}/50", True, "white")
+            display.blit(sp_zug,(start_x+325,350))
+            #hier muss der alter hin
+            try_case = regular_font.render(f"Testversuche: {try_dic[current_player]}/2", True, "#990a0a")
+            display.blit(try_case, (start_x+390,300))
+        
         
         #print(Top5)
         pygame.display.flip()
         clock.tick()
+        if current_player != "":
+            print(counter_dic[current_player])
+            if counter_dic[current_player] == 0:
+                button_locked_4 = True
+                alert2 = True
+                
+            
+                
 
         # Nach Anzeige einer Fehlermeldung automatisch zurücksetzen
         if early_click:
@@ -544,7 +599,9 @@ def main():
             clicked = False
             ready_for_click = False
             early_click = False
-            alert = True
+            if counter_dic[current_player] !=0:
+                alert = True
+            else: alert = False
             button_locked=False
         if file_changed:
             with open(file_url, 'w') as f:
