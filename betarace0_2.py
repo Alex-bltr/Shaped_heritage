@@ -306,6 +306,7 @@ def main():
                         button_locked = True
                         clicked = False
                         final_time = 0
+                        
                     else:
                         early_click = True
                         button_locked = True
@@ -322,7 +323,7 @@ def main():
                 if ready_for_click and not inp_active:
                     if try_dic[current_player] >0:
                         try_dic[current_player] -=1
-                        #alert = True
+                        alert = True
                     else:
                         if gamecount == 0:
                             Rang[current_player] = [0]  
@@ -582,7 +583,6 @@ def main():
         pygame.display.flip()
         clock.tick()
         if current_player != "":
-            print(counter_dic[current_player])
             if counter_dic[current_player] == 0:
                 button_locked_4 = True
                 alert2 = True
